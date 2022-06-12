@@ -5,131 +5,131 @@
 
 void InputManager::Init()
 {
-	m_MouseWheel = m_curx = m_cury = 0;
+	mouse_wheel_ = current_x_ = current_y_ = 0;
 	Log::LogDebug("Input Manager initialized");
 }
 
 void InputManager::Close()
 {
-	if (!m_Listener.empty())
-		m_Listener.clear();
+	if (!listener_list_.empty())
+		listener_list_.clear();
 	Log::LogDebug("Input Manager closed");
 }
 
 void InputManager::SetWinRect(const RECT &winrect)
 {
-	m_windowrect.left = winrect.left;
-	m_windowrect.right = winrect.right;
-	m_windowrect.top = winrect.top;
-	m_windowrect.bottom = winrect.bottom;
+	window_rect_.left = winrect.left;
+	window_rect_.right = winrect.right;
+	window_rect_.top = winrect.top;
+	window_rect_.bottom = winrect.bottom;
 }
 
 void InputManager::AddListener(InputListener *Listener)
 {
-	m_Listener.push_back(Listener);
+	listener_list_.push_back(Listener);
 }
 
 void InputManager::Run(const UINT &msg, WPARAM wParam, LPARAM lParam)
 {
-	if (m_Listener.empty())
+	if (listener_list_.empty())
 		return;
 
 	eKeyCodes KeyIndex;
 	wchar_t buffer[1];
 	BYTE lpKeyState[256];
 
-	m_eventcursor();// событие движения мыши
+	EventCursor();// событие движения мыши
 	switch(msg)
 	{
 	case WM_KEYDOWN:
 		KeyIndex = static_cast<eKeyCodes>(wParam);
 		GetKeyboardState(lpKeyState);
 		ToUnicode(wParam, HIWORD(lParam)&0xFF, lpKeyState, buffer, 1, 0);
-		m_eventkey(KeyIndex,buffer[0],true);
+		EventKey(KeyIndex,buffer[0],true);
 		break;
 	case WM_KEYUP:
 		KeyIndex = static_cast<eKeyCodes>(wParam);
 		GetKeyboardState(lpKeyState);
 		ToUnicode(wParam, HIWORD(lParam)&0xFF, lpKeyState, buffer, 1, 0);
-		m_eventkey(KeyIndex,buffer[0],false);
+		EventKey(KeyIndex,buffer[0],false);
 		break;
 	case WM_LBUTTONDOWN:
-		m_eventmouse(MOUSE_LEFT,true);
+		EventMouse(MOUSE_LEFT,true);
 		break;
 	case WM_LBUTTONUP:
-		m_eventmouse(MOUSE_LEFT,false);
+		EventMouse(MOUSE_LEFT,false);
 		break;
 	case WM_RBUTTONDOWN:
-		m_eventmouse(MOUSE_RIGHT,true);
+		EventMouse(MOUSE_RIGHT,true);
 		break;
 	case WM_RBUTTONUP:
-		m_eventmouse(MOUSE_RIGHT,false);
+		EventMouse(MOUSE_RIGHT,false);
 		break;
 	case WM_MBUTTONDOWN:
-		m_eventmouse(MOUSE_MIDDLE,true);
+		EventMouse(MOUSE_MIDDLE,true);
 		break;
 	case WM_MBUTTONUP:
-		m_eventmouse(MOUSE_MIDDLE,false);
+		EventMouse(MOUSE_MIDDLE,false);
 		break;
 	case WM_MOUSEWHEEL:
-		m_mousewheel( (short)GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA );
+		EventMouseWheel( (short)GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA );
 		break;
 	}
 }
 
-void InputManager::m_eventcursor()
+void InputManager::EventCursor()
 {
 	POINT Position;
 	GetCursorPos(&Position);	// получаем текущую позицию курсора
 
-	Position.x -= m_windowrect.left;
-	Position.y -= m_windowrect.top;
+	Position.x -= window_rect_.left;
+	Position.y -= window_rect_.top;
 
-	if (m_curx==Position.x && m_cury==Position.y)
+	if (current_x_==Position.x && current_y_==Position.y)
 		return;
 
-	m_curx = Position.x;
-	m_cury = Position.y;
+	current_x_ = Position.x;
+	current_y_ = Position.y;
 
-	for (auto listener : m_Listener) {
-		if (listener->MouseMove(MouseEvent(m_curx, m_cury))) return;
+	for (auto listener : listener_list_) {
+		if (listener->MouseMove(MouseEvent(current_x_, current_y_))) return;
 	}
 }
 
-void InputManager::m_eventmouse(const eMouseKeyCodes Code, bool press)
+void InputManager::EventMouse(const eMouseKeyCodes Code, bool press)
 {
-	for(auto listener : m_Listener)
+	for(auto listener : listener_list_)
 	{
 		if (press==true)
 		{
-			if (listener->MousePressed(MouseEventClick(Code, m_curx,m_cury))==true)
+			if (listener->MousePressed(MouseEventClick(Code, current_x_,current_y_))==true)
 				return;
 		}
 		else
 		{
-			if (listener->MouseReleased(MouseEventClick(Code, m_curx,m_cury))==true)
+			if (listener->MouseReleased(MouseEventClick(Code, current_x_,current_y_))==true)
 				return;
 		}
 	}
 }
 
-void InputManager::m_mousewheel(short Value)
+void InputManager::EventMouseWheel(short Value)
 {
-	if (m_MouseWheel==Value)
+	if (mouse_wheel_==Value)
 		return;
 
-	m_MouseWheel = Value;
+	mouse_wheel_ = Value;
 
-	for(auto listener : m_Listener)
+	for(auto listener : listener_list_)
 	{
-		if (listener->MouseWheel(MouseEventWheel(m_MouseWheel, m_curx,m_cury))==true)
+		if (listener->MouseWheel(MouseEventWheel(mouse_wheel_, current_x_,current_y_))==true)
 			return;
 	}
 }
 
-void InputManager::m_eventkey(const eKeyCodes KeyCode, const wchar_t ch, bool press)
+void InputManager::EventKey(const eKeyCodes KeyCode, const wchar_t ch, bool press)
 {
-	for(auto listener : m_Listener)
+	for(auto listener : listener_list_)
 	{
 		if (!listener)
 			continue;
