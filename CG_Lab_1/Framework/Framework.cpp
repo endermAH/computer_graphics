@@ -2,10 +2,10 @@
 #include <Windows.h>
 
 Framework::Framework() :
-		m_wnd(nullptr),
-		m_render(nullptr),
-		m_input(nullptr),
-		m_init(false)
+		window_(nullptr),
+		render_(nullptr),
+		input_(nullptr),
+		init_(false)
 {
 }
 
@@ -15,32 +15,32 @@ Framework::~Framework()
 
 void Framework::AddInputListener(InputListener *listener)
 {
-	if (m_input)
-		m_input->AddListener(listener);
+	if (input_)
+		input_->AddListener(listener);
 }
 
 void Framework::Run()
 {
-	if (m_init)
-		while(m_frame());
+	if (init_)
+		while(frame_());
 }
 
 bool Framework::Init()
 {
-	m_wnd = new Window();
-	m_input = new InputManager();
+	window_ = new Window();
+	input_ = new InputManager();
 
-	m_input->Init();
+	input_->Init();
 	
 	DescWindow desc;			
-	if ( !m_wnd->Create(desc) )
+	if ( !window_->Create(desc) )
 	{
 		Log::LogError("Failed to create a window!");
 		return false;
 	}
-	m_wnd->SetInputMgr(m_input);
+	window_->SetInputMgr(input_);
 
-	if ( !m_render->Init(m_wnd->GetHWND()) )
+	if ( !render_->Init(window_->GetHWND()) )
 	{
 		Log::LogError("Failed to create a render!");
 		return false;
@@ -49,25 +49,25 @@ bool Framework::Init()
 	// Add default listeners
 	Keyboard = new KeyboardController();
 	AddInputListener(Keyboard);
-	m_init = true;
+	init_ = true;
 	return true;
 }
 
-bool Framework::m_frame()
+bool Framework::frame_()
 {
 
-	m_wnd->RunEvent();
-	if (!m_wnd->IsActive())
+	window_->RunEvent();
+	if (!window_->IsActive())
 		return true;
 	
-	if (m_wnd->IsExit())
+	if (window_->IsExit())
 		return false;
 	
-	if (m_wnd->IsResize())
+	if (window_->IsResize())
 	{
 	}
 
-	if (!m_render->Draw())
+	if (!render_->Draw())
 		return false;
 
 	return true;
@@ -75,8 +75,8 @@ bool Framework::m_frame()
 
 void Framework::Close()
 {
-	m_init = false;
-	m_render->Close();
-	m_wnd->Close();
-	m_input->Close();
+	init_ = false;
+	render_->Close();
+	window_->Close();
+	input_->Close();
 }

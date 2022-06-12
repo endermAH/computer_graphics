@@ -18,14 +18,13 @@ public:
 	void Run();
 	void Close();
 
-	void SetRender(Render *render){m_render = render;}
+	void SetRender(Render *render){render_ = render;}
 	void AddInputListener(InputListener *listener);
+protected:
+	Window *window_;
+	Render *render_;
+	InputManager *input_;
+	bool init_;
 protected:	
-	bool m_frame();	
-
-	Window *m_wnd;
-	Render *m_render;
-	InputManager *m_input;
-	Log m_log;
-	bool m_init;
+	bool frame_();	
 };
