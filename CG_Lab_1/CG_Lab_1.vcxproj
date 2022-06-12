@@ -221,6 +221,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Framework\Framework.cpp" />
+    <ClCompile Include="Framework\InputSystem\InputControllers.cpp" />
     <ClCompile Include="Framework\InputSystem\InputManager.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -305,6 +306,7 @@
     <ClInclude Include="Deprecated\Framework\TriangleComponent.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\InputSystem\InputCodes.h" />
+    <ClInclude Include="Framework\InputSystem\InputControllers.h" />
     <ClInclude Include="Framework\InputSystem\InputListener.h" />
     <ClInclude Include="Framework\InputSystem\InputManager.h" />
     <ClInclude Include="Framework\Log.h" />

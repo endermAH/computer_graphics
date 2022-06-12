@@ -3,10 +3,13 @@
 #include "Window.h"
 #include "Render.h"
 #include "InputSystem/InputManager.h"
+#include "InputSystem/InputControllers.h"
 #include "Log.h"
 
 class Framework
 {
+public:
+	KeyboardController* Keyboard;
 public:
 	Framework();
 	~Framework();

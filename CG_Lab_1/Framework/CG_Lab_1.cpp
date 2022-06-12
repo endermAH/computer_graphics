@@ -8,21 +8,6 @@
 #include "InputSystem/InputListener.h"
 #include "Render.h"
 
-class MyInput : public InputListener
-{
-public:
-    bool KeyPressed(const KeyEvent &arg)
-    { 
-        Log::LogInfo("key press " + std::to_string(char(arg.wc)));
-        return false; 
-    }
-    bool MouseMove(const MouseEvent &arg)
-    {
-        printf("mouse %d - %d\n",arg.x,arg.y);
-        return false; 
-    }
-};
-
 class MyRender : public Render
 {
 public:
@@ -36,11 +21,10 @@ int main()
     Framework framework;
 
     MyRender *render = new MyRender();
-    MyInput *input = new MyInput();
 
     framework.SetRender(render);
     framework.Init();
-    framework.AddInputListener(input);
+    //framework.AddInputListener(controller);
 
     framework.Run();
 

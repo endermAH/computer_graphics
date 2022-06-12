@@ -46,6 +46,9 @@ bool Framework::Init()
 		return false;
 	}
 
+	// Add default listeners
+	Keyboard = new KeyboardController();
+	AddInputListener(Keyboard);
 	m_init = true;
 	return true;
 }
