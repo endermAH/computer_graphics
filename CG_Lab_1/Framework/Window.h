@@ -5,19 +5,21 @@
 
 #include "InputSystem/InputManager.h"
 
-struct DescWindow
+static LRESULT CALLBACK StaticWndProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
+
+struct WindorDescriptor
 {
-	DescWindow() : 
+	WindorDescriptor() : 
 		caption(L""),
 		width(640),
 		height(480),
-		posx(200),
-		posy(20),
+		pos_x(200),
+		pos_y(20),
 		resizing(true)
 	{}
 
-	int posx;
-	int posy;
+	int pos_x;
+	int pos_y;
 	std::wstring caption;	
 	int width;				
 	int height;				
@@ -29,52 +31,47 @@ class Window
 public:
 	Window();
 
-	static Window* Get(){return m_wndthis;}
+	static Window* Get(){return this_window_;}
 	
-	bool Create(const DescWindow &desc);
-	
+	bool Create(const WindorDescriptor &desc);
 	void RunEvent();
-	
 	void Close();
 
 	void SetInputMgr(InputManager *inputmgr);
 		
-	HWND GetHWND() const {return m_hwnd;}
-	int GetLeft() const {return m_desc.posx;}
-	int GetTop() const {return m_desc.posy;}
-	int GetWidth() const {return m_desc.width;}
-	int GetHeight() const {return m_desc.height;}
+	HWND GetHWND() const {return hwnd_;}
+	int GetLeft() const {return descrioptor_.pos_x;}
+	int GetTop() const {return descrioptor_.pos_y;}
+	int GetWidth() const {return descrioptor_.width;}
+	int GetHeight() const {return descrioptor_.height;}
 
-	const std::wstring& GetCaption() const {return m_desc.caption;}
-
-
-	bool IsExit() const {return m_isexit;}
-
-	bool IsActive() const {return m_active;}
-
+	const std::wstring& GetCaption() const {return descrioptor_.caption;}
+	
+	bool IsExit() const {return is_exit_;}
+	bool IsActive() const {return is_active_;}
 	
 	bool IsResize() 
 	{
-		bool ret = m_isresize;
-		m_isresize = false;
+		bool ret = is_isresize_;
+		is_isresize_ = false;
 		return ret;
 	}
 	
 	LRESULT WndProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
+	
 private:
-	void m_UpdateWindowState();
+	static Window *this_window_;
 
-	static Window *m_wndthis;
-
-	DescWindow m_desc;
-	InputManager *m_inputmgr;
-	HWND m_hwnd;		
-	bool m_isexit;		
-	bool m_active;		
-	bool m_minimized;
-	bool m_maximized;
-	bool m_isresize;
+	WindorDescriptor descrioptor_;
+	InputManager *input_manager_;
+	HWND hwnd_;		
+	bool is_exit_;		
+	bool is_active_;		
+	bool is_minimized_;
+	bool is_maximized_;
+	bool is_isresize_;
+	
+private:
+	void UpdateWindowState();
 };
-
-static LRESULT CALLBACK StaticWndProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 

@@ -1,27 +1,27 @@
 #include "Window.h"
 #include "Log.h"
 
-Window *Window::m_wndthis = nullptr;
+Window *Window::this_window_ = nullptr;
 
 Window::Window(void) :
-		m_inputmgr(nullptr),
-		m_hwnd(0),
-		m_isexit(false),
-		m_active(true),
-		m_minimized(false),
-		m_maximized(false),
-		m_isresize(false)
+		input_manager_(nullptr),
+		hwnd_(0),
+		is_exit_(false),
+		is_active_(true),
+		is_minimized_(false),
+		is_maximized_(false),
+		is_isresize_(false)
 {
-	if (!m_wndthis)
-		m_wndthis = this;
+	if (!this_window_)
+		this_window_ = this;
 	else
 		Log::LogError("Window already was created!");
 }
 
-bool Window::Create(const DescWindow &desc)
+bool Window::Create(const WindorDescriptor &desc)
 {
 	Log::LogDebug("Creating window...");
-	m_desc = desc;
+	descrioptor_ = desc;
 
 	WNDCLASSEXW wnd;
 
@@ -45,25 +45,25 @@ bool Window::Create(const DescWindow &desc)
 		return false;
 	}
 
-	RECT rect = {0, 0, m_desc.width, m_desc.height};
+	RECT rect = {0, 0, descrioptor_.width, descrioptor_.height};
 	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW | WS_VISIBLE, FALSE);
 
 	long lwidth = rect.right - rect.left;
 	long lheight = rect.bottom - rect.top;
 
-	long lleft = (long)m_desc.posx;	
-	long ltop = (long)m_desc.posy;
+	long lleft = (long)descrioptor_.pos_x;	
+	long ltop = (long)descrioptor_.pos_y;
 
-	m_hwnd = CreateWindowEx(NULL, L"D3D11F", m_desc.caption.c_str(), WS_OVERLAPPEDWINDOW | WS_VISIBLE,  lleft, ltop, lwidth, lheight, NULL, NULL, NULL, NULL);
+	hwnd_ = CreateWindowEx(NULL, L"D3D11F", descrioptor_.caption.c_str(), WS_OVERLAPPEDWINDOW | WS_VISIBLE,  lleft, ltop, lwidth, lheight, NULL, NULL, NULL, NULL);
 
-	if( !m_hwnd )
+	if( !hwnd_ )
 	{
 		Log::LogError("Can not create window :(");
 		return false;
 	}
 
-	ShowWindow(m_hwnd, SW_SHOW);
-	UpdateWindow(m_hwnd);
+	ShowWindow(hwnd_, SW_SHOW);
+	UpdateWindow(hwnd_);
 
 	return true;
 }
@@ -81,9 +81,9 @@ void Window::RunEvent()
 
 void Window::Close()
 {
-	if (m_hwnd)
-		DestroyWindow(m_hwnd);
-	m_hwnd = nullptr;
+	if (hwnd_)
+		DestroyWindow(hwnd_);
+	hwnd_ = nullptr;
 
 	Log::LogDebug("Window was closed.");
 }
@@ -95,55 +95,55 @@ LRESULT Window::WndProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 		return 0;
 	case WM_CLOSE:
-		m_isexit = true;
+		is_exit_ = true;
 		return 0;
 	case WM_ACTIVATE:
 		if (LOWORD(wParam) != WA_INACTIVE)
-			m_active = true;
+			is_active_ = true;
 		else
-			m_active = false;
+			is_active_ = false;
 		return 0;
 	case WM_MOVE:
-		m_desc.posx = LOWORD(lParam);
-		m_desc.posy = HIWORD(lParam);
-		m_UpdateWindowState();
+		descrioptor_.pos_x = LOWORD(lParam);
+		descrioptor_.pos_y = HIWORD(lParam);
+		UpdateWindowState();
 		return 0;
 	case WM_SIZE:
-		if (!m_desc.resizing)
+		if (!descrioptor_.resizing)
 			return 0;
-		m_desc.width = LOWORD(lParam);
-		m_desc.height = HIWORD(lParam);
-		m_isresize = true;
+		descrioptor_.width = LOWORD(lParam);
+		descrioptor_.height = HIWORD(lParam);
+		is_isresize_ = true;
 		if( wParam == SIZE_MINIMIZED )
 		{
-			m_active = false;
-			m_minimized = true;
-			m_maximized = false;
+			is_active_ = false;
+			is_minimized_ = true;
+			is_maximized_ = false;
 		}
 		else if( wParam == SIZE_MAXIMIZED )
 		{
-			m_active = true;
-			m_minimized = false;
-			m_maximized = true;
+			is_active_ = true;
+			is_minimized_ = false;
+			is_maximized_ = true;
 		}
 		else if( wParam == SIZE_RESTORED )
 		{
-			if( m_minimized )
+			if( is_minimized_ )
 			{
-				m_active = true;
-				m_minimized = false;
+				is_active_ = true;
+				is_minimized_ = false;
 			}
-			else if( m_maximized )
+			else if( is_maximized_ )
 			{
-				m_active = true;
-				m_maximized = false;
+				is_active_ = true;
+				is_maximized_ = false;
 			}
 		}
-		m_UpdateWindowState();
+		UpdateWindowState();
 		return 0;
 	case WM_MOUSEMOVE: case WM_LBUTTONUP: case WM_LBUTTONDOWN: case WM_MBUTTONUP: case WM_MBUTTONDOWN: case WM_RBUTTONUP: case WM_RBUTTONDOWN: case WM_MOUSEWHEEL: case WM_KEYDOWN: case WM_KEYUP:
-		if (m_inputmgr)
-			m_inputmgr->Run(nMsg ,wParam, lParam);
+		if (input_manager_)
+			input_manager_->Run(nMsg ,wParam, lParam);
 		return 0;
 	}
 
@@ -152,19 +152,19 @@ LRESULT Window::WndProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
 
 void Window::SetInputMgr(InputManager *inputmgr) 
 {
-	m_inputmgr = inputmgr;
-	m_UpdateWindowState();	
+	input_manager_ = inputmgr;
+	UpdateWindowState();	
 }
 
-void Window::m_UpdateWindowState()
+void Window::UpdateWindowState()
 {
 	RECT ClientRect;
-	ClientRect.left = m_desc.posx;
-	ClientRect.top = m_desc.posy;
-	ClientRect.right = m_desc.width;
-	ClientRect.bottom = m_desc.height;
-	if (m_inputmgr)
-		m_inputmgr->SetWinRect(ClientRect);
+	ClientRect.left = descrioptor_.pos_x;
+	ClientRect.top = descrioptor_.pos_y;
+	ClientRect.right = descrioptor_.width;
+	ClientRect.bottom = descrioptor_.height;
+	if (input_manager_)
+		input_manager_->SetWinRect(ClientRect);
 }
 
 LRESULT CALLBACK StaticWndProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam)

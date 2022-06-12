@@ -32,7 +32,7 @@ bool Framework::Init()
 
 	input_->Init();
 	
-	DescWindow desc;			
+	WindorDescriptor desc;			
 	if ( !window_->Create(desc) )
 	{
 		Log::LogError("Failed to create a window!");
