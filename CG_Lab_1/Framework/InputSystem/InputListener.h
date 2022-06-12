@@ -4,35 +4,31 @@
 
 struct MouseEvent
 {
-	MouseEvent(int nx, int ny) :  x(nx), y(ny) {}
-	
 	int x;				
 	int y;
+	MouseEvent(int new_x, int new_y) :  x(new_x), y(new_y) {}
 };
 
 
 struct MouseEventClick : public MouseEvent
 {
-	MouseEventClick(eMouseKeyCodes b, int nx, int ny) : MouseEvent(nx,ny), btn(b) {}
-
-	const eMouseKeyCodes btn;
+	const eMouseKeyCodes key;
+	MouseEventClick(eMouseKeyCodes pressed_key, int x, int y) : MouseEvent(x,y), key(pressed_key) {}
 };
 
 
 struct MouseEventWheel : public MouseEvent
 {
-	MouseEventWheel(int nwheel, int nx, int ny) : MouseEvent(nx,ny), wheel(nwheel) {}
-
 	int wheel;
+	MouseEventWheel(int new_wheel, int x, int y) : MouseEvent(x,y), wheel(new_wheel) {}
 };
 
 
 struct KeyEvent
 {
-	KeyEvent(wchar_t c, eKeyCodes kc) : wc(c), code(kc) {}
-
 	const wchar_t wc;
 	const eKeyCodes code;
+	KeyEvent(wchar_t c, eKeyCodes kc) : wc(c), code(kc) {}
 };
 
 class InputListener
