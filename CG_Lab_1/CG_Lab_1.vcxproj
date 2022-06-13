@@ -221,6 +221,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Framework\Framework.cpp" />
+    <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\InputSystem\InputControllers.cpp" />
     <ClCompile Include="Framework\InputSystem\InputManager.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -295,6 +296,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Framework\RenderCube.cpp" />
     <ClCompile Include="Framework\Render.cpp" />
     <ClCompile Include="Framework\RenderTriangle.cpp" />
     <ClCompile Include="Framework\Window.cpp" />
@@ -306,11 +308,13 @@
     <ClInclude Include="Deprecated\Framework\InputDevice.h" />
     <ClInclude Include="Deprecated\Framework\TriangleComponent.h" />
     <ClInclude Include="Framework\Framework.h" />
+    <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\InputSystem\InputCodes.h" />
     <ClInclude Include="Framework\InputSystem\InputControllers.h" />
     <ClInclude Include="Framework\InputSystem\InputListener.h" />
     <ClInclude Include="Framework\InputSystem\InputManager.h" />
     <ClInclude Include="Framework\Log.h" />
+    <ClInclude Include="Framework\RenderCube.h" />
     <ClInclude Include="Framework\Render.h" />
     <ClInclude Include="Framework\RenderTriangle.h" />
     <ClInclude Include="Framework\Window.h" />

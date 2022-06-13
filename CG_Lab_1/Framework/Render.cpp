@@ -1,4 +1,7 @@
+#include <string>
+
 #include "Render.h"
+#include "Log.h"
 
 Render::Render()
 {
@@ -115,4 +118,39 @@ void Render::Shutdown()
 	swap_chain_->Release();
 	immediate_context_->Release();
 	device_->Release();
+}
+
+HRESULT Render::CompileShaderFromFile(std::string FileName, LPCSTR EntryPoint, LPCSTR ShaderModel, ID3DBlob** ppBlobOut)
+{
+	HRESULT hr = S_OK;
+	ID3DBlob* errorCode = nullptr;
+	std::wstring wide_string = std::wstring(FileName.begin(), FileName.end());
+		
+	hr = D3DCompileFromFile(wide_string.c_str(),
+		nullptr,
+		nullptr,
+		EntryPoint,
+		ShaderModel,
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
+		0,
+		ppBlobOut, //vertexBc???
+		&errorCode);
+
+	CheckCompileResult(hr, errorCode);
+
+	return hr;
+}
+
+void Render::CheckCompileResult(HRESULT res, ID3DBlob* error_code) {
+	if (FAILED(res)) {
+		if (error_code) {
+			char* compileErrors = (char*)(error_code->GetBufferPointer());
+			Log::LogError("Can not compile \"../Shaders/default.hlsl\".");
+			Log::LogError(compileErrors);
+		}
+		else
+		{
+			Log::LogError("Missing shader file");
+		}
+	}
 }

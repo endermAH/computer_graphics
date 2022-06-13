@@ -25,33 +25,12 @@ RenderTriangle::RenderTriangle()
 	m_pVertexBuffer = nullptr;
 }
 
-HRESULT RenderTriangle::m_compileshaderfromfile(std::string FileName, LPCSTR EntryPoint, LPCSTR ShaderModel, ID3DBlob** ppBlobOut)
-{
-	HRESULT hr = S_OK;
-	ID3DBlob* errorCode = nullptr;
-	std::wstring wide_string = std::wstring(FileName.begin(), FileName.end());
-		
-	hr = D3DCompileFromFile(wide_string.c_str(),
-		nullptr,
-		nullptr,
-		EntryPoint,
-		ShaderModel,
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
-		0,
-		ppBlobOut, //vertexBc???
-		&errorCode);
-
-	CheckCompileResult(hr, errorCode);
-
-	return hr;
-}
-
 bool RenderTriangle::Init(HWND hwnd)
 {
 	HRESULT hr = S_OK;
 	ID3DBlob* pVSBlob = NULL;
 	
-	hr = m_compileshaderfromfile("default.hlsl", "VS", "vs_5_0", &pVSBlob );
+	hr = CompileShaderFromFile("default.hlsl", "VS", "vs_5_0", &pVSBlob );
 	if(FAILED(hr)) return false;
 
 	hr = device_->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), NULL, &m_pVertexShader );
@@ -72,27 +51,8 @@ bool RenderTriangle::Init(HWND hwnd)
 			0,
 			D3D11_INPUT_PER_VERTEX_DATA,
 			0 },
-	};
+	}; //change
 	
-	/*D3D11_INPUT_ELEMENT_DESC layout[] =
-	{
-		D3D11_INPUT_ELEMENT_DESC {
-			"POSITION",
-			0,
-			DXGI_FORMAT_R32G32B32A32_FLOAT,
-			0,
-			0,
-			D3D11_INPUT_PER_VERTEX_DATA,
-			0}
-		D3D11_INPUT_ELEMENT_DESC {
-			"COLOR",
-			0,
-			DXGI_FORMAT_R32G32B32A32_FLOAT,
-			0,
-			D3D11_APPEND_ALIGNED_ELEMENT,
-			D3D11_INPUT_PER_VERTEX_DATA,
-			0}
-	};*/
 	UINT numElements = ARRAYSIZE( layout );
 	
 	hr = device_->CreateInputLayout(
@@ -111,7 +71,7 @@ bool RenderTriangle::Init(HWND hwnd)
 	immediate_context_->IASetInputLayout( m_pVertexLayout );
 
 	ID3DBlob* pPSBlob = NULL;
-	hr = m_compileshaderfromfile( "default.hlsl", "PS", "ps_5_0", &pPSBlob );
+	hr = CompileShaderFromFile( "default.hlsl", "PS", "ps_5_0", &pPSBlob );
 	if(FAILED(hr)) return false;
 	
 	hr = device_->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), NULL, &m_pPixelShader );
@@ -170,18 +130,4 @@ void RenderTriangle::Close()
 	m_pVertexLayout->Release();
 	m_pVertexShader->Release();
 	m_pPixelShader->Release();
-}
-
-void RenderTriangle::CheckCompileResult(HRESULT res, ID3DBlob* error_code) {
-	if (FAILED(res)) {
-		if (error_code) {
-			char* compileErrors = (char*)(error_code->GetBufferPointer());
-			Log::LogError("Can not compile \"../Shaders/default.hlsl\".");
-			Log::LogError(compileErrors);
-		}
-		else
-		{
-			Log::LogError("Missing shader file");
-		}
-	}
 }

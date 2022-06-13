@@ -5,6 +5,7 @@
 
 #include "Log.h"
 #include "Framework.h"
+#include "RenderCube.h"
 #include "InputSystem/InputListener.h"
 #include "Render.h"
 #include "RenderTriangle.h"
@@ -14,8 +15,9 @@ int main()
 {
     Framework framework;
 
-    RenderTriangle *render = new RenderTriangle();
-
+    //RenderTriangle *render = new RenderTriangle();
+    RenderCube *render = new RenderCube();
+    
     framework.SetRender(render);
     framework.Init();
     //framework.AddInputListener(controller);

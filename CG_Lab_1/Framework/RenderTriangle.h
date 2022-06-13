@@ -23,9 +23,6 @@ public:
 	void Close();
 
 protected:
-	HRESULT m_compileshaderfromfile(std::string FileName, LPCSTR EntryPoint, LPCSTR ShaderModel, ID3DBlob** ppBlobOut );
-	void CheckCompileResult(HRESULT res, ID3DBlob* error_code);
-	
 	ID3D11Buffer *m_pVertexBuffer;
 	ID3D11InputLayout *m_pVertexLayout;	
 	ID3D11VertexShader *m_pVertexShader;
