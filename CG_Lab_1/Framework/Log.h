@@ -1,8 +1,7 @@
 #ifndef Log_h
 #define Log_h
 
-#include <iostream>
-#include <string>
+#include "stdafx.h"
 
 class Log
 {

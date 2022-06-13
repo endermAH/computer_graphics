@@ -18,7 +18,7 @@ Window::Window(void) :
 		Log::LogError("Window already was created!");
 }
 
-bool Window::Create(const WindorDescriptor &desc)
+bool Window::Create(const WindowDescriptor &desc)
 {
 	Log::LogDebug("Creating window...");
 	descrioptor_ = desc;

@@ -1,7 +1,5 @@
-#include <string>
-
+#include "stdafx.h"
 #include "Render.h"
-#include "Log.h"
 
 Render::Render()
 {
@@ -11,6 +9,8 @@ Render::Render()
 	immediate_context_ = nullptr;
 	swap_chain_ = nullptr;
 	render_target_view_ = nullptr;
+	m_pDepthStencil = nullptr;
+	m_pDepthStencilView = nullptr;
 }
 
 Render::~Render()
@@ -82,7 +82,33 @@ bool Render::CreateDevice(HWND hwnd) {
 	back_buffer->Release();
 	if (FAILED(hr)) return false;
 
-	immediate_context_->OMSetRenderTargets( 1, &render_target_view_, NULL );
+	D3D11_TEXTURE2D_DESC descDepth;
+	ZeroMemory( &descDepth, sizeof(descDepth) );
+	descDepth.Width = width;
+	descDepth.Height = height;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+	hr = device_->CreateTexture2D( &descDepth, NULL, &m_pDepthStencil );
+	if( FAILED( hr ) )
+		return false;
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
+	ZeroMemory( &descDSV, sizeof(descDSV) );
+	descDSV.Format = descDepth.Format;
+	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	descDSV.Texture2D.MipSlice = 0;
+	hr = device_->CreateDepthStencilView(m_pDepthStencil, &descDSV, &m_pDepthStencilView);
+	if( FAILED( hr ) )
+		return false;
+
+	immediate_context_->OMSetRenderTargets( 1, &render_target_view_, m_pDepthStencilView  );
 
 	D3D11_VIEWPORT viewport;
 	viewport.Width = (FLOAT)width;
@@ -100,6 +126,7 @@ void Render::BeginFrame()
 {
 	float clear_color[4] = { 0.0f, 0.125f, 0.3f, 1.0f };
 	immediate_context_->ClearRenderTargetView(render_target_view_, clear_color);
+	immediate_context_->ClearDepthStencilView( m_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0 );
 }
 
 void Render::EndFrame()
@@ -114,6 +141,8 @@ void Render::Shutdown()
 	if( immediate_context_) 
 		immediate_context_->ClearState();
 
+	m_pDepthStencil->Release();
+	m_pDepthStencilView->Release();
 	render_target_view_->Release();
 	swap_chain_->Release();
 	immediate_context_->Release();

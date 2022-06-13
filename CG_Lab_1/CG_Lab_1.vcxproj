@@ -317,6 +317,7 @@
     <ClInclude Include="Framework\RenderCube.h" />
     <ClInclude Include="Framework\Render.h" />
     <ClInclude Include="Framework\RenderTriangle.h" />
+    <ClInclude Include="Framework\stdafx.h" />
     <ClInclude Include="Framework\Window.h" />
   </ItemGroup>
   <ItemGroup>

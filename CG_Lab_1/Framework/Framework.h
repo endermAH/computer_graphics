@@ -1,10 +1,16 @@
 #pragma once
 
+#include "stdafx.h"
 #include "Window.h"
 #include "Render.h"
 #include "InputSystem/InputManager.h"
 #include "InputSystem/InputControllers.h"
-#include "Log.h"
+
+struct FrameworkDescriptor
+{
+	WindowDescriptor window_descriptor;
+	Render *render;
+};
 
 class Framework
 {
@@ -14,11 +20,10 @@ public:
 	Framework();
 	~Framework();
 
-	bool Init();
+	bool Init(const FrameworkDescriptor &desc);
 	void Run();
 	void Close();
-
-	void SetRender(Render *render){render_ = render;}
+	
 	void AddInputListener(InputListener *listener);
 protected:
 	Window *window_;

@@ -1,15 +1,6 @@
 #pragma once
 
-#include <Windows.h>
-#include <d3d.h>
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <directxmath.h>
-
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "dxguid.lib")
+#include "stdafx.h"
 
 class Render
 {
@@ -27,7 +18,7 @@ public:
 	virtual void Close() = 0;
 
 protected:
-	HRESULT CompileShaderFromFile(std::string FileName, LPCSTR EntryPoint, LPCSTR ShaderModel, ID3DBlob** ppBlobOut );
+	HRESULT CompileShaderFromFile(std::string FileName, LPCSTR EntryPoint, LPCSTR ShaderModel, ID3DBlob** ppBlobOut);
 	void CheckCompileResult(HRESULT res, ID3DBlob* error_code);
 
 protected:
@@ -38,4 +29,7 @@ protected:
 	ID3D11DeviceContext *immediate_context_;
 	IDXGISwapChain *swap_chain_;
 	ID3D11RenderTargetView *render_target_view_;
+
+	ID3D11Texture2D *m_pDepthStencil;
+	ID3D11DepthStencilView *m_pDepthStencilView;
 };

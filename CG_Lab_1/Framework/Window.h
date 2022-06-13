@@ -1,15 +1,13 @@
 #pragma once
 
-#include <string>
-#include <Windows.h>
-
+#include "stdafx.h"
 #include "InputSystem/InputManager.h"
 
 static LRESULT CALLBACK StaticWndProc(HWND hwnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 
-struct WindorDescriptor
+struct WindowDescriptor
 {
-	WindorDescriptor() : 
+	WindowDescriptor() : 
 		caption(L""),
 		width(640),
 		height(480),
@@ -33,7 +31,7 @@ public:
 
 	static Window* Get(){return this_window_;}
 	
-	bool Create(const WindorDescriptor &desc);
+	bool Create(const WindowDescriptor &desc);
 	void RunEvent();
 	void Close();
 
@@ -62,7 +60,7 @@ public:
 private:
 	static Window *this_window_;
 
-	WindorDescriptor descrioptor_;
+	WindowDescriptor descrioptor_;
 	InputManager *input_manager_;
 	HWND hwnd_;		
 	bool is_exit_;		

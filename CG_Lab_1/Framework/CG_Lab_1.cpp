@@ -1,13 +1,11 @@
 // CG_Lab_1.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include "stdafx.h"
 #include <iostream>
 
-#include "Log.h"
 #include "Framework.h"
 #include "RenderCube.h"
-#include "InputSystem/InputListener.h"
-#include "Render.h"
 #include "RenderTriangle.h"
 
 
@@ -18,8 +16,13 @@ int main()
     //RenderTriangle *render = new RenderTriangle();
     RenderCube *render = new RenderCube();
     
-    framework.SetRender(render);
-    framework.Init();
+    FrameworkDescriptor framework_desc;
+    framework_desc.window_descriptor.width = 640;
+    framework_desc.window_descriptor.height = 480;
+    framework_desc.render = render;
+    
+    framework.Init(framework_desc);
+    
     //framework.AddInputListener(controller);
 
     framework.Run();

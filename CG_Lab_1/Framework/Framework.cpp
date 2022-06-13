@@ -25,15 +25,15 @@ void Framework::Run()
 		while(frame_());
 }
 
-bool Framework::Init()
+bool Framework::Init(const FrameworkDescriptor &desc)
 {
+	render_ = desc.render;
 	window_ = new Window();
 	input_ = new InputManager();
 
 	input_->Init();
 	
-	WindorDescriptor desc;			
-	if ( !window_->Create(desc) )
+	if ( !window_->Create(desc.window_descriptor) )
 	{
 		Log::LogError("Failed to create a window!");
 		return false;
