@@ -7,20 +7,14 @@
 #include "Framework.h"
 #include "InputSystem/InputListener.h"
 #include "Render.h"
+#include "RenderTriangle.h"
 
-class MyRender : public Render
-{
-public:
-    bool Init(HWND nwnd){return true;}
-    bool Draw(){return true;}
-    void Close(){}
-};
 
 int main()
 {
     Framework framework;
 
-    MyRender *render = new MyRender();
+    RenderTriangle *render = new RenderTriangle();
 
     framework.SetRender(render);
     framework.Init();

@@ -39,8 +39,8 @@ bool Framework::Init()
 		return false;
 	}
 	window_->SetInputMgr(input_);
-
-	if ( !render_->Init(window_->GetHWND()) )
+	
+	if (!render_->CreateDevice(window_->GetHWND()))
 	{
 		Log::LogError("Failed to create a render!");
 		return false;
@@ -67,16 +67,19 @@ bool Framework::frame_()
 	{
 	}
 
+	render_->BeginFrame();
 	if (!render_->Draw())
 		return false;
-
+	render_->EndFrame();
+	
 	return true;
 }
 
 void Framework::Close()
 {
 	init_ = false;
-	render_->Close();
+	render_->Shutdown();
+	delete render_;
 	window_->Close();
 	input_->Close();
 }

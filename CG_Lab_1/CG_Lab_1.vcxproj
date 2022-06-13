@@ -296,6 +296,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Framework\Render.cpp" />
+    <ClCompile Include="Framework\RenderTriangle.cpp" />
     <ClCompile Include="Framework\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +312,7 @@
     <ClInclude Include="Framework\InputSystem\InputManager.h" />
     <ClInclude Include="Framework\Log.h" />
     <ClInclude Include="Framework\Render.h" />
+    <ClInclude Include="Framework\RenderTriangle.h" />
     <ClInclude Include="Framework\Window.h" />
   </ItemGroup>
   <ItemGroup>
