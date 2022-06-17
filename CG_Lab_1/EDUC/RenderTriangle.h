@@ -1,7 +1,7 @@
 #pragma once
 
-#include "stdafx.h"
-#include "Render.h"
+#include "../Framework/stdafx.h"
+#include "../Framework/RenderSystem/Render.h"
 
 class RenderTriangle : public Render
 {

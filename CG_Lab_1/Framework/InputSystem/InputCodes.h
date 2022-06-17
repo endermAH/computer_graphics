@@ -9,7 +9,7 @@ enum eMouseKeyCodes
 	MOUSE_MAX
 };
 
-enum eKeyCodes
+enum class eKeyCodes
 {
 	KEY_LBUTTON     = 0x01, // Left mouse button
 	KEY_RBUTTON     = 0x02, // Right mouse button

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Framework/stdafx.h"
 #include "RenderTriangle.h"
 
 struct SimpleVertex
@@ -109,7 +109,7 @@ bool RenderTriangle::Draw()
 {
 	immediate_context_->VSSetShader( m_pVertexShader, NULL, 0 );
 	immediate_context_->PSSetShader( m_pPixelShader, NULL, 0 );
-	 immediate_context_->Draw( 3, 0 );
+	immediate_context_->Draw( 3, 0 );
 	return true;
 }
 

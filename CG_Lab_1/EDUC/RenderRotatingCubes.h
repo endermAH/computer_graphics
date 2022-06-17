@@ -1,15 +1,17 @@
 #pragma once
-#include "stdafx.h"
 
-#include "Render.h"
+#include "../Framework/stdafx.h"
+#include "../Framework/RenderSystem/Render.h"
 
-class RenderCube : public Render
+class RenderRotatingCubes : public Render
 {
 public:
-	RenderCube();
+	RenderRotatingCubes();
 	bool Init(HWND hwnd);
 	bool Draw();
 	void Close();
+
+	void Update();
 
 	void* operator new(size_t i)
 	{
@@ -21,16 +23,17 @@ public:
 		_aligned_free(p);
 	}
 
-private:
+private:		
 	ID3D11Buffer *m_pVertexBuffer;
 	ID3D11InputLayout *m_pVertexLayout;	
 	ID3D11VertexShader *m_pVertexShader;
 	ID3D11PixelShader *m_pPixelShader;
 
-	DirectX::XMMATRIX m_World;
-	DirectX::XMMATRIX m_View;
-	DirectX::XMMATRIX m_Projection;
-
 	ID3D11Buffer *m_pIndexBuffer;
 	ID3D11Buffer *m_pConstantBuffer;
+
+	DirectX::XMMATRIX m_World1;
+	DirectX::XMMATRIX m_World2;
+	DirectX::XMMATRIX m_View;
+	DirectX::XMMATRIX m_Projection;
 };

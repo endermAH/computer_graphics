@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "Render.h"
 
 Render::Render()
@@ -59,7 +59,7 @@ bool Render::CreateDevice(HWND hwnd) {
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = TRUE;
-
+	
 	for (UINT driver_type_index = 0; driver_type_index < driver_types_count; driver_type_index++)
 	{
 		driver_type_ = driver_types[driver_type_index];
@@ -72,15 +72,24 @@ bool Render::CreateDevice(HWND hwnd) {
 		if( SUCCEEDED( hr ) )
 			break;
 	}
-	if (FAILED(hr)) return false;
+	if (FAILED(hr)) {
+		Log::LogError("Failed to create SwapChain");
+		return false;
+	}
 
 	ID3D11Texture2D* back_buffer = NULL;
 	hr = swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
-	if (FAILED(hr)) return false;
+	if (FAILED(hr)) {
+		Log::LogError("Failed to get BackBuffer");
+		return false;
+	}
 
 	hr = device_->CreateRenderTargetView(back_buffer, NULL, &render_target_view_);
 	back_buffer->Release();
-	if (FAILED(hr)) return false;
+	if (FAILED(hr)) {
+		Log::LogError("Failed to create RenderTargetView");
+		return false;
+	}
 
 	D3D11_TEXTURE2D_DESC descDepth;
 	ZeroMemory( &descDepth, sizeof(descDepth) );
@@ -105,8 +114,10 @@ bool Render::CreateDevice(HWND hwnd) {
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Texture2D.MipSlice = 0;
 	hr = device_->CreateDepthStencilView(m_pDepthStencil, &descDSV, &m_pDepthStencilView);
-	if( FAILED( hr ) )
+	if (FAILED(hr)) {
+		Log::LogError("Failed to create DepthStencilView");
 		return false;
+	}
 
 	immediate_context_->OMSetRenderTargets( 1, &render_target_view_, m_pDepthStencilView  );
 
@@ -119,6 +130,7 @@ bool Render::CreateDevice(HWND hwnd) {
 	viewport.TopLeftY = 0;
 	immediate_context_->RSSetViewports( 1, &viewport );
 
+	Log::LogDebug("Device created.");
 	return Init(hwnd);
 }
 

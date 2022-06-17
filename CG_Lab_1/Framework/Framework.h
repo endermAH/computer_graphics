@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include "Window.h"
-#include "Render.h"
+#include "RenderSystem/Render.h"
 #include "InputSystem/InputManager.h"
 #include "InputSystem/InputControllers.h"
 
@@ -31,5 +31,5 @@ protected:
 	InputManager *input_;
 	bool init_;
 protected:	
-	bool frame_();	
+	virtual bool frame_() = 0;	
 };

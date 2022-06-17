@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdafx.h"
+#include "../stdafx.h"
 
 class Render
 {
@@ -21,7 +21,7 @@ protected:
 	HRESULT CompileShaderFromFile(std::string FileName, LPCSTR EntryPoint, LPCSTR ShaderModel, ID3DBlob** ppBlobOut);
 	void CheckCompileResult(HRESULT res, ID3DBlob* error_code);
 
-protected:
+public:
 	D3D_DRIVER_TYPE driver_type_;
 	D3D_FEATURE_LEVEL feature_level_;
 	

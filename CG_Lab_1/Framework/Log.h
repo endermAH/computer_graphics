@@ -2,6 +2,7 @@
 #define Log_h
 
 #include "stdafx.h"
+#define CURRENT_LEVEL 1
 
 class Log
 {
@@ -32,6 +33,7 @@ public:
     
     static void PushMessage(LogLevel level, std::string msg) {
         std::string prefix;
+        if (level < CURRENT_LEVEL) return;
         switch (level) {
         case LogLevel::Debug:
             prefix = "[DEBUG]: ";

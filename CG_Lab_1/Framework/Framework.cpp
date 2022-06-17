@@ -47,13 +47,11 @@ bool Framework::Init(const FrameworkDescriptor &desc)
 	}
 
 	// Add default listeners
-	Keyboard = new KeyboardController();
-	AddInputListener(Keyboard);
 	init_ = true;
 	return true;
 }
 
-bool Framework::frame_()
+/*bool Framework::frame_()
 {
 
 	window_->RunEvent();
@@ -66,14 +64,14 @@ bool Framework::frame_()
 	if (window_->IsResize())
 	{
 	}
-
+	//
 	render_->BeginFrame();
 	if (!render_->Draw())
 		return false;
 	render_->EndFrame();
 	
 	return true;
-}
+}*/
 
 void Framework::Close()
 {

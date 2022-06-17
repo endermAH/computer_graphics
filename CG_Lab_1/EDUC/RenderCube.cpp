@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Framework/stdafx.h"
 #include "RenderCube.h"
 
 struct SimpleVertex

@@ -11,19 +11,19 @@ class KeyboardController : public InputListener
 public:
 	bool KeyPressed(const KeyEvent &arg)
 	{ 
-		Log::LogInfo("Key pressed: " + std::to_string(char(arg.code)));
-		keys_down.insert(arg.code);
+		Log::LogDebug("Key pressed: " + std::to_string(char(arg.code)));
+		keys_down.insert(static_cast<unsigned int>(arg.code));
 		return false; 
 	}
 	bool KeyReleased(const KeyEvent& arg) {
-		Log::LogInfo("Key realised: " + std::to_string(char(arg.code)));
-		keys_down.erase(arg.code);
+		Log::LogDebug("Key realised: " + std::to_string(char(arg.code)));
+		keys_down.erase(static_cast<unsigned int>(arg.code));
 		return false; 
 	}
 
 	bool IsKeyDown(eKeyCodes key) {
-		return keys_down.count(key);
+		return (bool)keys_down.count(static_cast<unsigned int>(key));
 	}
 private:
-	std::unordered_set<eKeyCodes> keys_down;
+	std::unordered_set<unsigned int> keys_down;
 };
