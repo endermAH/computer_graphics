@@ -1,6 +1,5 @@
 #pragma once
 #include "Planet.h"
-#include "FPSCameraListener.h"
 #include "../Framework/GameSystem/Game.h"
 
 class Camera {
@@ -58,7 +57,6 @@ public:
 class Solar : public Game
 {
 public:
-	FPSCameraListener *fps_controller_;
 	Camera* camera_;
 public:
 	Solar(float window_width, float window_height)
@@ -66,8 +64,6 @@ public:
 	
 	void GameStart() {
 		camera_ = new Camera();
-		fps_controller_ = new FPSCameraListener(GetWindowWidth()/2, GetWindowHeight()/2);
-		AddInputListener(fps_controller_);
 		
 		PlanetColors yellow;
 		yellow.main = DirectX::XMFLOAT4( 1.0f, 1.0f, 0.0f, 1.0f );
@@ -137,24 +133,16 @@ public:
 	
 	void UpdateCamera() {
 		RenderSystem* rs = static_cast<RenderSystem*>(render_);
-		float translation_x = -fps_controller_->mouse_delta_x_;
-		float translation_y = fps_controller_->mouse_delta_y_;
-		float translation_z = 0;
 
 		float factor = GetWindowWidth() / 4 / 360;
 		float yaw = (Mouse()->mouse_x_ - GetWindowWidth() / 2) * factor;
 		float pitch = (Mouse()->mouse_y_ - GetWindowWidth() / 2) * factor;
-		Log::LogDebug(std::to_string(yaw));
 		
 		camera_->Rotate(pitch, yaw);
-		//if (translation_y) camera_->RotateYaw(-translation_y/abs(translation_y));
-		//if (translation_y) camera_->RotateYaw(-translation_y);
-
-		fps_controller_->mouse_delta_x_ = 0;
-		fps_controller_->mouse_delta_y_ = 0;
 		
-		translation_x = 0;
-		translation_y = 0;
+		float translation_x = 0;
+		float translation_y = 0;
+		float translation_z = 0;
 
 		float speed_ = 0.3;
 		if (Keyboard()->IsKeyDown(eKeyCodes::KEY_D)) {
@@ -179,22 +167,6 @@ public:
 		
 		rs->view_ = camera_->GetView();
 		
-		
-		/*rs->at_ = DirectX::XMVector3Transform(rs->at_, DirectX::XMMatrixTranslation(translation_x,translation_y,0));
-		fps_controller_->mouse_delta_x_ = 0;
-		fps_controller_->mouse_delta_y_ = 0;
-
-		translation_x = 0;
-		translation_y = 0;
-
-		float tg_a = rs->at_.m128_f32[0] / rs->at_.m128_f32[1];
-		float sin_a = sqrt(pow(rs->at_.m128_f32[0],2) + pow(rs->at_.m128_f32[1], 2)) / rs->at_.m128_f32[0];
-		float cos_a = sqrt(pow(rs->at_.m128_f32[0],2) + pow(rs->at_.m128_f32[1], 2)) / rs->at_.m128_f32[1];
-		
-		
-		rs->eye_ = DirectX::XMVector3Transform(rs->eye_, DirectX::XMMatrixTranslation(translation_x,translation_y,0));
-		rs->at_ = DirectX::XMVector3Transform(rs->at_, DirectX::XMMatrixTranslation(translation_x,translation_y,0));
-		return;*/
 	}
 	
 };

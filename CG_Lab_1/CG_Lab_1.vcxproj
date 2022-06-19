@@ -668,7 +668,6 @@
     <ClCompile Include="Pong\Pong.cpp" />
     <ClCompile Include="Pong\RenderBall.cpp" />
     <ClCompile Include="Pong\RenderPaddle.cpp" />
-    <ClCompile Include="Solar\FPSCameraListener.cpp" />
     <ClCompile Include="Solar\Planet.cpp" />
     <ClCompile Include="Solar\RenderPlanet.cpp" />
     <ClCompile Include="Solar\Solar.cpp" />
@@ -700,7 +699,6 @@
     <ClInclude Include="Pong\Pong.h" />
     <ClInclude Include="Pong\RenderBall.h" />
     <ClInclude Include="Pong\RenderPaddle.h" />
-    <ClInclude Include="Solar\FPSCameraListener.h" />
     <ClInclude Include="Solar\Planet.h" />
     <ClInclude Include="Solar\RenderPlanet.h" />
     <ClInclude Include="Solar\Solar.h" />
