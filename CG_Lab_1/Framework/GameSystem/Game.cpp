@@ -2,7 +2,7 @@
 
 Game *Game::main_instance_ = nullptr;
 
-Game::Game(float window_width, float window_height) {
+Game::Game(float window_width, float window_height, Render::ProjectionType projection_type) {
 	std::srand(std::time(nullptr));
 	
 	main_instance_ = this;
@@ -10,7 +10,7 @@ Game::Game(float window_width, float window_height) {
 		
 	window_width_ = window_width;
 	window_height_ = window_height;
-	RenderSystem *render = new RenderSystem();
+	RenderSystem *render = new RenderSystem(projection_type);
 	
 	FrameworkDescriptor framework_desc;
 	framework_desc.window_descriptor.width = window_width_;
@@ -24,6 +24,9 @@ Game::Game(float window_width, float window_height) {
 	
 	keyboard_controller_ = new KeyboardController();
 	AddInputListener(keyboard_controller_);
+
+	mouse_controller_ = new MouseController();
+	AddInputListener(mouse_controller_);
 }
 
 bool Game::frame_() {

@@ -46,6 +46,8 @@ bool Window::Create(const WindowDescriptor &desc)
 	}
 
 	RECT rect = {0, 0, descrioptor_.width, descrioptor_.height};
+	SetCursorPos(rect.right + rect.left / 2, rect.top + rect.bottom / 2);
+	
 	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW | WS_VISIBLE, FALSE);
 
 	long lwidth = rect.right - rect.left;
@@ -54,6 +56,8 @@ bool Window::Create(const WindowDescriptor &desc)
 	long lleft = (long)descrioptor_.pos_x;	
 	long ltop = (long)descrioptor_.pos_y;
 
+	
+	
 	hwnd_ = CreateWindowEx(NULL, L"D3D11F", descrioptor_.caption.c_str(), WS_OVERLAPPEDWINDOW | WS_VISIBLE,  lleft, ltop, lwidth, lheight, NULL, NULL, NULL, NULL);
 
 	if( !hwnd_ )

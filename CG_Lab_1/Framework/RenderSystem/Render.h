@@ -4,7 +4,13 @@
 
 class Render
 {
+	
 public:
+	enum class ProjectionType
+	{
+		Perspective, Orthographic
+	};
+	
 	Render();
 	virtual ~Render();
 

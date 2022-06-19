@@ -2,7 +2,7 @@
 #define Log_h
 
 #include "stdafx.h"
-#define CURRENT_LEVEL 1
+#define CURRENT_LEVEL 0
 
 class Log
 {

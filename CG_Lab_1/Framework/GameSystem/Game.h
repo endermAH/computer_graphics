@@ -3,7 +3,6 @@
 #include "../stdafx.h"
 #include "GameObject.h"
 #include "../Framework.h"
-#include "../../EDUC/RenderRotatingCubes.h"
 #include "../RenderSystem/RenderSystem.h"
 
 class Game : public Framework
@@ -12,21 +11,23 @@ private:
 	static Game* main_instance_;
 	
 	KeyboardController* keyboard_controller_ ;
+	MouseController* mouse_controller_;
 	std::vector<GameObject*>* game_objects_ ;
 
 	float window_width_;
 	float window_height_;
 
 	int object_count_;
-	
-	//RenderSystem* render_;
 public:
-	Game(float window_width, float window_height);
+	Game(float window_width, float window_height, Render::ProjectionType projection_type);
 	static std::vector<GameObject*>* GetAllObjects() {
 		return main_instance_->game_objects_;
 	}
 	static KeyboardController* Keyboard() {
 		return main_instance_->keyboard_controller_;
+	}
+	static MouseController* Mouse() {
+		return main_instance_->mouse_controller_;
 	}
 	void AddObject(GameObject* game_object) {
 		game_object->SetUid(object_count_);
@@ -35,11 +36,11 @@ public:
 		game_objects_->push_back(game_object);
 	}
 
-	float static GetWindowWidth() {
+	static float GetWindowWidth() {
 		return main_instance_->window_width_;
 	}
 
-	float static GetWindowHeight() {
+	static float GetWindowHeight() {
 		return main_instance_->window_height_;
 	}
 

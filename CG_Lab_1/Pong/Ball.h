@@ -9,12 +9,12 @@
 class Ball : public GameObject
 {
 public:
-	const float width_ = 30;
-	const float height_ = 30;
-	const float start_speed_ = 0.2;
+	const float width_ = 30.0f;
+	const float height_ = 30.0f;
+	const float start_speed_ = 0.2f;
 
-	float static_speed_x_ = 0.2;
-	float static_speed_y_ = 0.2;
+	float static_speed_x_ = 0.2f;
+	float static_speed_y_ = 0.2f;
 
 	Paddle* paddle_top_;
 	Paddle* paddle_bot_;
@@ -77,14 +77,14 @@ private:
 		float paddle_bot_boreder = paddle_bot_->y_offset_ + paddle_bot_->height_ / 2 + height_ / 2;
 
 		if (new_y > paddle_top_boreder && IsOnPaddle(paddle_top_) && cur_speed_y_ > 0) {
-			static_speed_x_ *= 1.1;
-			static_speed_y_ *= 1.1;
+			static_speed_x_ *= 1.1f;
+			static_speed_y_ *= 1.1f;
 			cur_speed_y_ = static_speed_y_ * -1;
 
 		}
 		if (new_y < paddle_bot_boreder && IsOnPaddle(paddle_bot_) && cur_speed_y_ < 0) {
-			static_speed_x_ += 0.01;
-			static_speed_y_ += 0.01;
+			static_speed_x_ += 0.01f;
+			static_speed_y_ += 0.01f;
 			cur_speed_y_ = static_speed_y_;
 		}
 		

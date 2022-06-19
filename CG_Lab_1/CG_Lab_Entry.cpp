@@ -1,18 +1,19 @@
 // CG_Lab_1.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "stdafx.h"
+#include "Framework/stdafx.h"
 #include <iostream>
 
-#include "Framework.h"
-#include "../EDUC/RenderRotatingCubes.h"
-#include "../EDUC/RenderCube.h"
-#include "../EDUC/RenderTriangle.h"
-#include "../Pong/RenderPaddle.h"
-#include "GameSystem/Game.h"
-#include "../Pong/Paddle.h"
-#include "../Pong/Ball.h"
-#include "../Pong/Pong.h"
+#include "Framework/Framework.h"
+#include "EDUC/RenderRotatingCubes.h"
+#include "EDUC/RenderCube.h"
+#include "EDUC/RenderTriangle.h"
+#include "Pong/RenderPaddle.h"
+#include "Framework/GameSystem/Game.h"
+#include "Pong/Paddle.h"
+#include "Pong/Ball.h"
+#include "Pong/Pong.h"
+#include "Solar/Solar.h"
 
 /*void test_framework() {
     Framework framework;
@@ -40,8 +41,13 @@ void test_pong() {
     pong->GameStart();
 }
 
+void test_solar() {
+    Solar *solar = new Solar(640, 480);
+    solar->GameStart();
+}
+
 int main()
 {
-    test_pong();
+    test_solar();
     return 0;
 }

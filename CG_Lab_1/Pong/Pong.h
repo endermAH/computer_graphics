@@ -15,7 +15,7 @@ public:
 	
 public:
 	Pong(float window_width, float window_height)
-		: Game(window_width, window_height) {}
+		: Game(window_width, window_height, Render::ProjectionType::Orthographic) {}
 	
 	void GameStart() {
 		paddle_top_ = new Paddle(200.0, eKeyCodes::KEY_RIGHT, eKeyCodes::KEY_LEFT);

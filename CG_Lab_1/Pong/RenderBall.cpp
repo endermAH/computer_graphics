@@ -21,13 +21,13 @@ bool RenderBall::Draw(RenderSystem* render_system) {
 	SimpleVertex vertices[] =
 	{
 		{ DirectX::XMFLOAT3( 0, y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
-		{ DirectX::XMFLOAT3( 0.75 * x_offset, 0.75 * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
+		{ DirectX::XMFLOAT3( 0.75f * x_offset, 0.75f * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
 		{ DirectX::XMFLOAT3( x_offset, 0, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
-		{ DirectX::XMFLOAT3(  0.75 * x_offset, -0.75 * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
+		{ DirectX::XMFLOAT3(  0.75f * x_offset, -0.75f * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
 		{ DirectX::XMFLOAT3( 0, -y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
-		{ DirectX::XMFLOAT3( -0.75 * x_offset, -0.75 * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
+		{ DirectX::XMFLOAT3( -0.75f * x_offset, -0.75f * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
 		{ DirectX::XMFLOAT3( -x_offset, 0, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
-		{ DirectX::XMFLOAT3( -0.75 * x_offset,  0.75 * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
+		{ DirectX::XMFLOAT3( -0.75f * x_offset,  0.75f * y_offset, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
 		{ DirectX::XMFLOAT3( 0, 0, 0.0f ), DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f ) },
 	};
 

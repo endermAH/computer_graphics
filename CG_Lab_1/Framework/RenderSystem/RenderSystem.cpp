@@ -1,9 +1,11 @@
 #include "RenderSystem.h"
 
-RenderSystem::RenderSystem() {
+RenderSystem::RenderSystem(ProjectionType projection_type) {
 	vertex_layout_ = nullptr;
 	vertex_shader_ = nullptr;
 	pixel_shader_ = nullptr;
+	
+	projection_type_ = projection_type;
 }
 
 bool RenderSystem::Init(HWND hwnd) {
@@ -74,24 +76,26 @@ bool RenderSystem::Init(HWND hwnd) {
 		return false;
 	}
 
-	DirectX::XMVECTOR Eye = DirectX::XMVectorSet( 0.0f, 1.0f, -5.0f, 0.0f );
-	DirectX::XMVECTOR At = DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-	DirectX::XMVECTOR Up = DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-	view_ = DirectX::XMMatrixLookAtLH( Eye, At, Up );
+	eye_ = DirectX::XMVectorSet( 0.0f, 5.0f, -5.0f, 0.0f );
+	at_ = DirectX::XMVectorSet( 0.0f, 0.0f, 0.0f, 0.0f );
+	up_ = DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
+	view_ = DirectX::XMMatrixLookAtLH( eye_, at_, up_ );
 
 	// TODO: Move to Game Object
 	float width = Game::GetWindowWidth();
 	float height = Game::GetWindowHeight();
-	
-	//projection_  = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, width/height, 0.01f, 100.0f );
-	projection_ = DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f);
 
-	auto* game_objects = Game::GetAllObjects();
+	if (projection_type_ == ProjectionType::Orthographic) {
+		projection_ = DirectX::XMMatrixOrthographicLH(width, height, 0.01f, 100.0f);
+	} else if (projection_type_ == ProjectionType::Perspective) {
+		projection_  = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, width/height, 0.01f, 100.0f );
+	}
 	
 	return true;
 }
 
 bool RenderSystem::Draw() {
+	//view_ = DirectX::XMMatrixLookAtLH( eye_, at_, up_ );
 	auto* game_objects = Game::GetAllObjects();
 	
 	for (int i = 0; i < game_objects->size(); i++) {
